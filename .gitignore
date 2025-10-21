@@ -1,0 +1,42 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+MemoryCaptures/
+UserSettings/
+[Ll]ibrary/
+[Ll]ightmapSnapshot/
+*.pidb
+*.svd
+*.userprefs
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userosscache
+*.sln.docstates
+
+# =============== #
+# OS generated    #
+# =============== #
+.DS_Store
+Thumbs.db
+
+# =============== #
+# IDE files       #
+# =============== #
+.vscode/
+.idea/
+*.code-workspace
+
+# =============== #
+# TextMeshPro     #
+# =============== #
+[Tt]extMeshPro/
