@@ -11,10 +11,10 @@ public class GameOverManager : MonoBehaviour
     [Header("Buttons")]
     public Button retryButton;
     public Button quitButton;
-    public Button mainMenuButton;          // <-- add this
+    public Button mainMenuButton;          
 
     [Header("Scenes")]
-    public string mainMenuSceneName = "MainMenu";  // <-- set in Inspector
+    public string mainMenuSceneName = "MainMenu";  
 
     bool isActive = false;
 
@@ -29,7 +29,7 @@ public class GameOverManager : MonoBehaviour
 
         if (retryButton)    retryButton.onClick.AddListener(OnRetry);
         if (quitButton)     quitButton.onClick.AddListener(OnQuit);
-        if (mainMenuButton) mainMenuButton.onClick.AddListener(OnMainMenu);  // <-- wire
+        if (mainMenuButton) mainMenuButton.onClick.AddListener(OnMainMenu);  
     }
 
     void Update()
@@ -64,14 +64,14 @@ public class GameOverManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void OnMainMenu()                              // <-- this is the key
+    public void OnMainMenu()                              
     {
         if (string.IsNullOrEmpty(mainMenuSceneName))
         {
             Debug.LogError("[GameOverManager] Main menu scene name not set.");
             return;
         }
-        Time.timeScale = 1f;                              // unpause before switching
+        Time.timeScale = 1f;                              
         SceneManager.LoadScene(mainMenuSceneName);
     }
 }

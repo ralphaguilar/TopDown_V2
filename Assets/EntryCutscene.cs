@@ -1,28 +1,28 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem; // for PlayerInput (new input system)
+using UnityEngine.InputSystem; 
 
 public class EntryCutscene : MonoBehaviour
 {
     [Header("Refs")]
-    public Transform player;              // your player in this scene
-    public Animator playerAnimator;       // animator on the player
-    public PlayerInput playerInput;       // PlayerInput component on the player
-    public Transform startPoint;          // where the player appears (e.g., doorway)
-    public Transform endPoint;            // where they walk to (e.g., inside room)
+    public Transform player;            
+    public Animator playerAnimator;       
+    public PlayerInput playerInput;       
+    public Transform startPoint;
+    public Transform endPoint;            
     public float walkSpeed = 3f;
     public float arriveDistance = 0.05f;
 
     [Header("Fade (optional)")]
-    public FadeScreen fader;              // drag your FadeScreen if you want fade-in/out
-    public float prePause = 0.25f;        // pause before moving
-    public float postPause = 0.25f;       // pause after arriving
-    public float fadeInDuration = 0.8f;   // if you want fade-in when scene starts
+    public FadeScreen fader;              
+    public float prePause = 0.25f;        
+    public float postPause = 0.25f;       
+    public float fadeInDuration = 0.8f;   
 
     [Header("Animator Params (pick what you use)")]
-    public string speedParam = "Speed";   // or leave empty if you use isWalking bool
+    public string speedParam = "Speed";  
     public string isWalkingParam = "isWalking";
-    public string moveXParam = "MoveX";   // for 4-dir anims
+    public string moveXParam = "MoveX";   
     public string moveYParam = "MoveY";
 
     void Start()
@@ -36,7 +36,7 @@ public class EntryCutscene : MonoBehaviour
 
     IEnumerator DoCutscene()
     {
-        // Optional fade-in from black
+        // fade-in from black
         if (fader) yield return fader.FadeIn(fadeInDuration);
 
         yield return new WaitForSecondsRealtime(prePause);
@@ -58,7 +58,7 @@ public class EntryCutscene : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(postPause);
 
-        // Re-enable controls
+        // Re enable controls
         if (playerInput) playerInput.enabled = true;
     }
 

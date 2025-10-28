@@ -4,27 +4,27 @@ using System;
 public class NightClock : MonoBehaviour
 {
     [Header("Night Window (24h clock)")]
-    [Range(0,23)] public int startHour = 22;    // 22 = 10 PM
-    [Range(0,23)] public int endHour   = 6;     // 6  = 6 AM (next day)
+    [Range(0,23)] public int startHour = 22;    
+    [Range(0,23)] public int endHour   = 6;     
 
     [Header("Duration")]
     [Tooltip("How long the whole night lasts in real time (seconds).")]
-    public float nightDurationSeconds = 480f;   // 8 minutes -> 1 min per in-game hour
+    public float nightDurationSeconds = 480f;   
 
     [Header("Difficulty Curves (0..1 over the night)")]
-    public AnimationCurve healthCurve       = AnimationCurve.Linear(0,1,1,2);   // 1x -> 2x
-    public AnimationCurve speedCurve        = AnimationCurve.Linear(0,1,1,1.3f); // 1x -> 1.3x
-    public AnimationCurve spawnIntervalCurve= AnimationCurve.Linear(0,1,1,0.5f); // 1x -> 0.5x (faster)
+    public AnimationCurve healthCurve       = AnimationCurve.Linear(0,1,1,2);   
+    public AnimationCurve speedCurve        = AnimationCurve.Linear(0,1,1,1.3f); 
+    public AnimationCurve spawnIntervalCurve= AnimationCurve.Linear(0,1,1,0.5f); 
 
     [Header("Control")]
     public bool autoStart = true;
     public bool paused    = false;
 
-    public event Action<int> OnHourChanged;     // fires when displayed hour changes
+    public event Action<int> OnHourChanged;     
     public event Action OnNightEnded;
 
-    float _elapsed;          // real seconds since night start
-    float _progress01;       // 0..1 over entire night
+    float _elapsed;          
+    float _progress01;       
     int   _lastShownHour = -999;
 
     public float Progress01 => _progress01;
@@ -61,21 +61,20 @@ public class NightClock : MonoBehaviour
         }
     }
 
-    // ---------- Time display ----------
-    // Map 0..1 to 10 PM .. 6 AM (wrap across midnight)
+    // Time display
     public void GetDisplayTime(out int hour12, out int minute, out bool isAM)
     {
-        // 8 in-game hours span the night
+        // 8 in game hours
         float nightHours = 8f;
         float totalHoursSinceStart = _progress01 * nightHours;
 
-        // Start at 22:00 (10 PM), add totalHours, wrap 24
+        // Starts at 10PM
         float hour24 = (startHour + totalHoursSinceStart) % 24f;
         int hourInt  = Mathf.FloorToInt(hour24);
         float hourFrac = hour24 - hourInt;
         minute = Mathf.FloorToInt(hourFrac * 60f);
 
-        // 24->12 conversion
+        // 24 to 12 conversion
         isAM   = hour24 < 12f;
         int h12 = hourInt % 12;
         if (h12 == 0) h12 = 12;
@@ -85,7 +84,7 @@ public class NightClock : MonoBehaviour
     void FireHourIfChanged()
     {
         GetDisplayTime(out int hour12, out int minute, out bool isAM);
-        // Use the shown hour (12h) + AM/PM to avoid double-firing across midnight changes
+        
         int key = (isAM ? 0 : 100) + hour12;
         if (key != _lastShownHour)
         {
@@ -94,7 +93,7 @@ public class NightClock : MonoBehaviour
         }
     }
 
-    // ---------- Difficulty getters ----------
+    //  Difficulty getters 
     public float GetHealthMultiplier()        => Mathf.Max(0.01f, healthCurve.Evaluate(_progress01));
     public float GetSpeedMultiplier()         => Mathf.Max(0.01f, speedCurve.Evaluate(_progress01));
     public float GetSpawnIntervalMultiplier() => Mathf.Clamp(spawnIntervalCurve.Evaluate(_progress01), 0.05f, 10f);

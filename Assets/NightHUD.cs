@@ -4,8 +4,8 @@ using UnityEngine;
 public class NightHUD : MonoBehaviour
 {
     public NightClock clock;
-    public TMP_Text timeText;      // e.g., "12:40 AM"
-    public TMP_Text progressText;  // optional: "Night 73%"
+    public TMP_Text timeText;     
+    public TMP_Text progressText;  
 
     void Update()
     {

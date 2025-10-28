@@ -10,8 +10,8 @@ public class ShopItemButton : MonoBehaviour
     [Header("Setup")]
     public ItemType itemType;
     public int price = 100;
-    public int quantity = 1;        // HP bonus / grenade amount / heal
-    public float speedMult = 1.10f; // energy drink multiplier
+    public int quantity = 1;        
+    public float speedMult = 1.10f; 
 
     [Header("UI (optional)")]
     public TMP_Text label;
@@ -27,8 +27,7 @@ public class ShopItemButton : MonoBehaviour
         btn = GetComponent<Button>();
         if (priceText) priceText.text = $"${price}";
 
-        // Don't touch singletons yet; some scenes spawn them later this frame.
-        // Defer to Start (or end of frame) to resolve and refresh.
+       
     }
 
     void Start()
@@ -38,7 +37,6 @@ public class ShopItemButton : MonoBehaviour
 
     System.Collections.IEnumerator DeferredInit()
     {
-        // wait a frame so Bootstrap/singletons can appear
         yield return null;
         TryResolve();
         SafeRefresh();
@@ -46,7 +44,6 @@ public class ShopItemButton : MonoBehaviour
 
     void OnEnable()
     {
-        // try resolve again in case this object was re-enabled later
         TryResolve();
         SafeRefresh();
     }
@@ -73,7 +70,6 @@ public class ShopItemButton : MonoBehaviour
 
         if (!wallet.CanAfford(price))
         {
-            // TODO: feedback (shake/flash)
             return;
         }
 
@@ -81,13 +77,12 @@ public class ShopItemButton : MonoBehaviour
         {
             ApplyPurchase();
             SafeRefresh();
-            // TODO: play SFX
         }
     }
 
     bool IsOwnedOneTime()
     {
-        if (upg == null) return false; // null-safe
+        if (upg == null) return false;
         return itemType switch
         {
             ItemType.Shotgun    => upg.hasShotgun,

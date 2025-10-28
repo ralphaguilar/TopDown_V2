@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemySpawnerTimed : MonoBehaviour
 {
     [Header("Clock / Prefabs")]
-    public NightClock clock;             // drag your NightClock in Inspector
+    public NightClock clock;            
     public GameObject enemyPrefab;
     public Transform player;
 
@@ -23,7 +23,7 @@ public class EnemySpawnerTimed : MonoBehaviour
 
     [Header("Staggering")]
     [Tooltip("Randomize the very first spawn time so multiple spawners don't sync.")]
-    public Vector2 firstSpawnOffsetMultiplier = new Vector2(0.33f, 1.0f); // e.g., 0.33x..1.0x of current interval
+    public Vector2 firstSpawnOffsetMultiplier = new Vector2(0.33f, 1.0f);
 
     [Header("Global Cap (recommended if you have multiple spawners)")]
     public bool useGlobalCap = true;
@@ -32,7 +32,7 @@ public class EnemySpawnerTimed : MonoBehaviour
     [Header("Debug")]
     public bool logSpawns;
 
-    // ---- internal ----
+    // this is internal
     float _timer;
     int _aliveApprox;
 
@@ -72,17 +72,17 @@ public class EnemySpawnerTimed : MonoBehaviour
         if (!clock || !clock.NightRunning) return;
         if (!enemyPrefab) return;
 
-        // Evaluate current interval from curve and clamp the minimum
-        float mult = clock.GetSpawnIntervalMultiplier(); // e.g., 1.0 at 10PM → 0.60 near 6AM (your curve)
+        // Evaluates current interval from curve and clamp the minimum
+        float mult = clock.GetSpawnIntervalMultiplier();
         float currentInterval = Mathf.Max(minIntervalClamp, baseInterval * mult);
 
         _timer -= Time.deltaTime;
         if (_timer <= 0f)
         {
-            // respect per-spawner cap
+            // spawner cap
             if (_aliveApprox < simultaneousCap)
             {
-                // respect global cap across all spawners (recommended)
+                // respect global cap across all spawners 
                 if (!useGlobalCap || s_globalAlive < globalAliveCap)
                 {
                     var go = SpawnOne();
@@ -107,7 +107,7 @@ public class EnemySpawnerTimed : MonoBehaviour
 
         for (int tries = 0; tries < 20; tries++)
         {
-            // pick a ring around the spawner (avoid clustering right on it)
+            // picks ring from spanwer
             float r = Random.Range(spawnRadius * 0.5f, spawnRadius);
             Vector2 pos = basePos + Random.insideUnitCircle.normalized * r;
 
@@ -117,7 +117,7 @@ public class EnemySpawnerTimed : MonoBehaviour
             var go = Instantiate(enemyPrefab, pos, Quaternion.identity);
             go.layer = LayerMask.NameToLayer("Enemy");
 
-            // Apply difficulty scaling right now
+            // Apply difficulty scaling
             var init = go.GetComponent<EnemyInitializer>();
             if (!init) init = go.AddComponent<EnemyInitializer>();
             init.Apply(clock.GetHealthMultiplier(), clock.GetSpeedMultiplier());

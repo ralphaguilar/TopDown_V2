@@ -9,7 +9,7 @@ public class PlayerInteract : MonoBehaviour
     public float interactRadius = 1.6f;
 
     [Tooltip("Layers that contain interactables (put your Shopkeeper on one of these). Use Everything to test.")]
-    public LayerMask interactableLayers = ~0; // Everything by default
+    public LayerMask interactableLayers = ~0; 
 
     [Header("Prompt UI")]
     [Tooltip("TMP text that shows e.g. 'Press E to open shop'.")]
@@ -23,19 +23,18 @@ public class PlayerInteract : MonoBehaviour
 
     // --- internals ---
     private IInteractable current;
-    private float interactCooldown; // debounce (seconds)
+    private float interactCooldown; 
     private const float CooldownTime = 0.15f;
 
     void Update()
     {
-        // Tick cooldown (unscaled so it counts even if Time.timeScale = 0)
+        
         if (interactCooldown > 0f)
             interactCooldown -= Time.unscaledDeltaTime;
 
-        // Find nearest interactable each frame
         current = FindNearestInteractable();
 
-        // Update the prompt UI
+        // updates UI
         if (current != null)
         {
             string t = current.GetPrompt();
@@ -47,17 +46,13 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    // Called by PlayerInput → Interact (CallbackContext)
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        // Only respond to performed (fires once per press)
         if (!ctx.performed) return;
 
-        // Debounce so holding the key doesn’t re-trigger
         if (interactCooldown > 0f) return;
         interactCooldown = CooldownTime;
 
-        // Attempt interaction
         if (current != null)
         {
             current.Interact();

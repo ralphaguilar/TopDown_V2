@@ -10,12 +10,12 @@ public class PlayerUpgrades : MonoBehaviour
     public bool hasDash = false;
 
     [Header("Stats / Consumables")]
-    public int   grenadeStock = 0;          // adds to next night
-    public int   maxHealthBonus = 0;        // adds to base max
-    public float speedMultiplier = 1f;      // multiplies player move speed
+    public int   grenadeStock = 0;        
+    public int   maxHealthBonus = 0;       
+    public float speedMultiplier = 1f;      
 
     [Header("Optional: immediate heal on next load")]
-    public int pendingHeal = 0;             // e.g., from health pack purchase
+    public int pendingHeal = 0;             
 
     void Awake()
     {
@@ -23,13 +23,13 @@ public class PlayerUpgrades : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // sane clamps
+       
         speedMultiplier = Mathf.Max(0.5f, speedMultiplier);
         grenadeStock = Mathf.Max(0, grenadeStock);
         maxHealthBonus = Mathf.Max(0, maxHealthBonus);
     }
 
-    // Helpers for the shop to call
+   
     public bool GrantShotgun()     { if (hasShotgun) return false; hasShotgun = true; return true; }
     public bool GrantMachinegun()  { if (hasMachinegun) return false; hasMachinegun = true; return true; }
     public bool GrantDash()        { if (hasDash) return false; hasDash = true; return true; }

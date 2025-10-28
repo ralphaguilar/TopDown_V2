@@ -16,8 +16,6 @@ public class PlayerWallet : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            // If a new wallet spawns in the next scene, destroy it,
-            // BUT first, copy its money into the persistent one if needed.
             if (Current > 0) Instance.Add(Current);
             Destroy(gameObject);
             return;
@@ -26,7 +24,7 @@ public class PlayerWallet : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Initialize once
+        
         Current = Mathf.Max(0, startingMoney);
         onMoneyChanged?.Invoke(Current);
     }
@@ -49,18 +47,4 @@ public class PlayerWallet : MonoBehaviour
         return true;
     }
 
-    // Optional: save/load between game sessions
-    public void SaveToPrefs(string key = "Wallet")
-    {
-        PlayerPrefs.SetInt(key, Current);
-        PlayerPrefs.Save();
-    }
-    public void LoadFromPrefs(string key = "Wallet")
-    {
-        if (PlayerPrefs.HasKey(key))
-        {
-            Current = PlayerPrefs.GetInt(key, 0);
-            onMoneyChanged?.Invoke(Current);
-        }
-    }
 }

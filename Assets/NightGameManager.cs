@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class NightGameManager : MonoBehaviour
 {
     public NightClock clock;
-    public FadeScreen fader;          // drag your FadeScreen here
+    public FadeScreen fader;         
     public string nextSceneName = "NextSceneName";
     public float fadeDuration = 1.0f;
     public bool pauseGameplayDuringFade = true;
@@ -20,9 +20,9 @@ public class NightGameManager : MonoBehaviour
 
     void HandleNightWin()
     {
-        // Optional: stop enemy spawns, disable player input, etc.
+    
         if (pauseGameplayDuringFade)
-            Time.timeScale = 0f;  // we’re using unscaled time in FadeScreen, so this is safe
+            Time.timeScale = 0f;  
 
         StartCoroutine(DoFadeThenLoad());
     }
@@ -36,11 +36,11 @@ public class NightGameManager : MonoBehaviour
         }
         else
         {
-            // Fallback: load immediately
+            //load immediately
             SceneManager.LoadScene(nextSceneName);
         }
 
-        // Important: restore timescale for the next scene
+        // restore timescale for the next scene
         Time.timeScale = 1f;
     }
 }

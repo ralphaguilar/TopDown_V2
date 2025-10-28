@@ -4,7 +4,7 @@ public class PlayerHurtbox : MonoBehaviour
 {
     public float touchDamage = 10f;
     public float touchKnockback = 6f;
-    public LayerMask enemyLayers; // set to Enemy
+    public LayerMask enemyLayers; 
 
     PlayerHealth player;
     Transform root;

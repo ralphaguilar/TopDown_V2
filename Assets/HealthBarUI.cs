@@ -5,13 +5,13 @@ using TMPro;
 public class HealthBarUI : MonoBehaviour
 {
     [Header("References")]
-    public PlayerHealth player;     // Drag your Player (with PlayerHealth)
-    public Image fill;              // Drag the HP_Bar_Fill (Image Type = Filled, Horizontal, Origin Left)
-    public TMP_Text hpText;         // Optional: drag a TMP text that sits over the bar
+    public PlayerHealth player;     
+    public Image fill;              
+    public TMP_Text hpText;         
 
     [Header("Animation")]
     [Tooltip("How fast the bar moves toward the new value (units per second).")]
-    public float lerpSpeed = 8f;    // 0 = instant
+    public float lerpSpeed = 8f;    
 
     [Header("Colors")]
     public Color fullColor = new Color(0.17f, 0.85f, 0.29f); // green
@@ -26,7 +26,7 @@ public class HealthBarUI : MonoBehaviour
         if (!player) player = FindFirstObjectByType<PlayerHealth>();
         if (!fill)
         {
-            // Try to find child by name as a convenience
+            
             var t = transform.Find("HP_Bar_Fill");
             if (t) fill = t.GetComponent<Image>();
         }
@@ -49,7 +49,7 @@ public class HealthBarUI : MonoBehaviour
 
     void Update()
     {
-        // Smoothly animate toward target
+        // animates toward target
         if (lerpSpeed <= 0f) current01 = target01;
         else current01 = Mathf.MoveTowards(current01, target01, lerpSpeed * Time.unscaledDeltaTime);
 
@@ -71,7 +71,7 @@ public class HealthBarUI : MonoBehaviour
 
     Color EvaluateColor(float t)
     {
-        // 0..0.5: red -> yellow, 0.5..1: yellow -> green
+        
         if (t < 0.5f)
         {
             float k = t / 0.5f;
@@ -84,7 +84,6 @@ public class HealthBarUI : MonoBehaviour
         }
     }
 
-    // Optional helper to force-refresh from code (e.g., after loading)
     public void RefreshNow()
     {
         if (!player) return;

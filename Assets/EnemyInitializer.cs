@@ -8,7 +8,7 @@ public class EnemyInitializer : MonoBehaviour
         if (hp)
         {
             hp.maxHealth = Mathf.Round(hp.maxHealth * healthMult);
-            hp.RefreshToMax(); // make sure current HP matches new max
+            hp.RefreshToMax(); 
         }
 
         var chase = GetComponent<EnemyChase>();

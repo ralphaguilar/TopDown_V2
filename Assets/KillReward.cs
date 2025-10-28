@@ -4,11 +4,11 @@ using UnityEngine;
 public class KillReward : MonoBehaviour
 {
     public int reward = 10;
-    public GameObject floatingTextPrefab; // assign in Inspector
+    public GameObject floatingTextPrefab; 
 
     PlayerWallet wallet;
     EnemyHealth hp;
-    Transform cam; // for screen-space conversion if needed
+    Transform cam; 
 
     void Awake()
     {
@@ -20,10 +20,10 @@ public class KillReward : MonoBehaviour
 
     void HandleDeath()
     {
-        // 1) Add money
+        //Add money
         if (wallet != null) wallet.Add(reward);
 
-        // 2) Spawn floating text
+        // Spawn floating text
         if (floatingTextPrefab)
         {
             // Convert world pos to UI screen pos

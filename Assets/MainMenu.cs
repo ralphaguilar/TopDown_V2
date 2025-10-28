@@ -3,20 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    // Called by Start button
+    // Start button
     public void PlayGame()
     {
-        SceneManager.LoadScene("SampleScene"); // <-- replace with your scene
+        SceneManager.LoadScene("SampleScene"); 
     }
 
-    // Called by Quit button
+    //  Quit button
     public void QuitGame()
     {
         Debug.Log("QUIT!");
-        Application.Quit(); // works in build, won’t close editor
+        Application.Quit(); 
     }
 
-    // Called by Options button (empty for now)
+    //  Options button 
     public void OpenOptions()
     {
         Debug.Log("Options button clicked (no functionality yet)");

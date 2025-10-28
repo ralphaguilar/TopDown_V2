@@ -21,7 +21,6 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
-    // Update is called once per frame
     void DoDamage()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, hitLayers);

@@ -13,7 +13,7 @@ public class MoneyHUD : MonoBehaviour
         if (wallet != null)
         {
             wallet.onMoneyChanged += UpdateText;
-            UpdateText(wallet.Current); // init
+            UpdateText(wallet.Current); 
         }
     }
 

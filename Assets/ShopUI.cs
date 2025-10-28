@@ -7,9 +7,9 @@ public class ShopUI : MonoBehaviour
     public GameObject shopRoot;
 
     [Header("Optional")]
-    public GameObject firstSelect;     // first button to highlight
+    public GameObject firstSelect;     
     public bool pauseOnOpen = false;
-    public int canvasSortingOrder = 50; // bump above other UIs
+    public int canvasSortingOrder = 50; 
 
     Canvas shopCanvas;
     CanvasGroup cg;
@@ -19,11 +19,10 @@ public class ShopUI : MonoBehaviour
         if (!shopRoot)
             Debug.LogError("[ShopUI] shopRoot is NOT assigned. Drag your ShopPanel here.", this);
 
-        // Try to find Canvas/CanvasGroup automatically
         if (shopRoot)
         {
             cg = shopRoot.GetComponent<CanvasGroup>();
-            if (!cg) cg = shopRoot.AddComponent<CanvasGroup>(); // ensure we can control alpha
+            if (!cg) cg = shopRoot.AddComponent<CanvasGroup>(); 
 
             shopCanvas = shopRoot.GetComponentInParent<Canvas>();
             if (shopCanvas == null)
@@ -37,7 +36,7 @@ public class ShopUI : MonoBehaviour
     {
         if (!shopRoot) { Debug.LogError("[ShopUI] Open() called but shopRoot is null", this); return; }
 
-        // Ensure Canvas renders on top
+        
         if (shopCanvas != null)
         {
             shopCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -45,10 +44,6 @@ public class ShopUI : MonoBehaviour
             if (!shopCanvas.enabled) shopCanvas.enabled = true;
         }
 
-        // Make sure nothing else is hiding it (e.g., FadeScreen)
-        // Tip: temporarily disable other full-screen Images/CanvasGroups to confirm.
-
-        // Activate GameObject and make it visible & interactive
         if (!shopRoot.activeSelf) shopRoot.SetActive(true);
 
         cg.alpha = 1f;
@@ -57,7 +52,7 @@ public class ShopUI : MonoBehaviour
 
         if (pauseOnOpen) Time.timeScale = 0f;
 
-        // Select first button for keyboard/controller
+     
         if (firstSelect) EventSystem.current?.SetSelectedGameObject(firstSelect);
 
         IsOpen = true;
@@ -72,7 +67,6 @@ public class ShopUI : MonoBehaviour
         cg.blocksRaycasts = false;
         cg.interactable = false;
 
-        // You can keep the panel active with alpha 0, or deactivate it:
         shopRoot.SetActive(false);
 
         if (pauseOnOpen) Time.timeScale = 1f;

@@ -9,7 +9,7 @@ public class PlayerShooting : MonoBehaviour
 
     // -------- Events for HUD --------
     public System.Action<WeaponType> OnWeaponChanged;
-    public System.Action<int, int>   OnAmmoChanged;   // (mag, reserve)
+    public System.Action<int, int>   OnAmmoChanged;   
 
     [System.Serializable]
     public class AmmoState {
@@ -20,24 +20,24 @@ public class PlayerShooting : MonoBehaviour
 
     // -------- References --------
     [Header("References")]
-    public Transform firePoint;              // where projectiles spawn (child of player)
-    public GameObject bulletPrefab;          // projectile prefab (must have RB2D + Collider2D; Bullet.cs recommended)
-    public GameObject grenadePrefab;         // grenade prefab (with Grenade.cs)
-    public SpriteRenderer bodySprite;        // optional: flip for left/right facing
+    public Transform firePoint;              
+    public GameObject bulletPrefab;          
+    public GameObject grenadePrefab;         
+    public SpriteRenderer bodySprite;        
 
     [Header("General")]
     public WeaponType currentWeapon = WeaponType.Pistol;
-    public LayerMask damageLayers = ~0;      // set to Enemy (and walls if desired)
-    public float bulletLifetime = 2f;        // fallback if Bullet.cs not used
-    public float spriteAngleOffsetDeg = 0f;  // if your sprite faces up, try +90
+    public LayerMask damageLayers = ~0;      
+    public float bulletLifetime = 2f;        
+    public float spriteAngleOffsetDeg = 0f;  
 
-    // -------- Pistol --------
+    // Pistol 
     [Header("Pistol")]
     public float pistolDamage = 35f;
     public float pistolSpeed = 18f;
     public float pistolFireCooldown = 0.25f;
 
-    // -------- Shotgun --------
+    // Shotgun 
     [Header("Shotgun")]
     public int   shotgunPellets = 6;
     public float shotgunPelletDamage = 12f;
@@ -46,28 +46,28 @@ public class PlayerShooting : MonoBehaviour
     public float shotgunSpread = 18f;
     public float shotgunFireCooldown = 0.8f;
 
-    // -------- Machine Gun --------
+    // Machine Gun 
     [Header("Machine Gun")]
     public float mgDamage = 20f;
     public float mgSpeed = 20f;
-    public float mgFireCooldown = 0.08f;     // smaller = faster
-    public float mgBaseInaccuracy = 2.5f;    // degrees random spread per shot
+    public float mgFireCooldown = 0.08f;     
+    public float mgBaseInaccuracy = 2.5f;    
 
-    // -------- Knife (melee) --------
+    // Knife 
     [Header("Knife (Melee)")]
     public float knifeDamage = 50f;
-    public float knifeRange = 1.2f;          // radius of hit
+    public float knifeRange = 1.2f;          
     public float knifeKnockback = 8f;
     public float knifeCooldown = 0.45f;
-    public Vector2 knifeOffset = new Vector2(0.8f, 0f); // forward offset from player
+    public Vector2 knifeOffset = new Vector2(0.8f, 0f); 
     public bool knifeDebugGizmo = true;
 
-    // -------- Grenade Drop --------
+    // Grenade Drop 
     [Header("Grenade (Drop)")]
-    public float dropOffsetDown = 0.08f;     // small nudge below feet
+    public float dropOffsetDown = 0.08f;     
     public float ownerCollisionIgnoreTime = 0.2f;
 
-    // -------- Private state --------
+    // Private state 
     Camera mainCamera;
     Vector2 lastAimDir = Vector2.right;
     float fireTimer = 0f;
@@ -81,15 +81,14 @@ public class PlayerShooting : MonoBehaviour
         mainCamera = Camera.main;
         transform.rotation = Quaternion.identity;
 
-        // Initialize ammo (tune to taste)
+        // Initialize ammo 
         _ammo = new Dictionary<WeaponType, AmmoState> {
             { WeaponType.Pistol,     new AmmoState { magSize = 12, mag = 12, reserve = 72 } },
             { WeaponType.Shotgun,    new AmmoState { magSize =  2, mag =  2, reserve = 24 } },
             { WeaponType.MachineGun, new AmmoState { magSize = 30, mag = 30, reserve = 180 } },
-            // Knife has no ammo entry
+            
         };
 
-        // Notify HUD of initial state
         OnWeaponChanged?.Invoke(currentWeapon);
         var a0 = GetCurrentAmmo();
         OnAmmoChanged?.Invoke(a0.mag, a0.reserve);
@@ -120,7 +119,7 @@ public class PlayerShooting : MonoBehaviour
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        // Machine gun fires while held; others fire on click
+        // Machine gun fires while held
         bool wantsFire = (currentWeapon == WeaponType.MachineGun)
             ? mouse.leftButton.isPressed
             : mouse.leftButton.wasPressedThisFrame;
@@ -152,7 +151,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // ------------------- Aiming -------------------
+    // Aiming
     void AimAtMouse()
     {
         if (!firePoint || mainCamera == null || Mouse.current == null) return;
@@ -182,13 +181,13 @@ public class PlayerShooting : MonoBehaviour
     void SetWeapon(WeaponType w)
     {
         currentWeapon = w;
-        fireTimer = 0f; // allow immediate fire after switching
+        fireTimer = 0f; 
         OnWeaponChanged?.Invoke(w);
         var a = GetCurrentAmmo();
         OnAmmoChanged?.Invoke(a.mag, a.reserve);
     }
 
-    // ------------------- Ammo helpers -------------------
+    // Ammo helpers 
     public AmmoState GetCurrentAmmo()
     {
         if (_ammo != null && _ammo.TryGetValue(currentWeapon, out var a))
@@ -198,8 +197,7 @@ public class PlayerShooting : MonoBehaviour
 
     void Reload()
     {
-        if (!_ammo.TryGetValue(currentWeapon, out var a)) return; // Knife or untracked
-
+        if (!_ammo.TryGetValue(currentWeapon, out var a)) return; 
         if (a.mag >= a.magSize) return;
         if (a.reserve <= 0) return;
 
@@ -209,10 +207,10 @@ public class PlayerShooting : MonoBehaviour
         a.reserve -= take;
 
         OnAmmoChanged?.Invoke(a.mag, a.reserve);
-        // TODO: play reload SFX/animation
+        
     }
 
-    // ------------------- Weapons -------------------
+    // Weapons 
     void FirePistol()
     {
         if (!_ammo.TryGetValue(WeaponType.Pistol, out var aP)) return;
@@ -253,7 +251,6 @@ public class PlayerShooting : MonoBehaviour
 
     void DoKnifeAttack()
     {
-        // center the hit a bit forward
         Vector2 center = (Vector2)transform.position + (lastAimDir.normalized * knifeOffset.x) + new Vector2(0f, knifeOffset.y);
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, knifeRange, damageLayers);
 
@@ -269,10 +266,9 @@ public class PlayerShooting : MonoBehaviour
             Vector2 kb = dir * knifeKnockback;
             d.TakeDamage(knifeDamage, hitPoint, kb);
         }
-        // TODO: play swing anim/SFX
     }
 
-    // ------------------- Bullet helpers -------------------
+    // Bullet helpers
     void FireSingle(float damage, float speed)
     {
         SpawnBullet(lastAimDir, damage, speed, bulletLifetime);
@@ -302,7 +298,7 @@ public class PlayerShooting : MonoBehaviour
         IgnoreSelfBriefly(go);
     }
 
-    // ------------------- Grenade drop -------------------
+    // Grenade drop 
     void DropGrenadeAtFeet()
     {
         if (!grenadePrefab) { Debug.LogError("[PlayerShooting] grenadePrefab not assigned"); return; }
@@ -334,7 +330,7 @@ public class PlayerShooting : MonoBehaviour
             StartCoroutine(TemporarilyIgnoreCollision(playerCol, projCol, 0.12f));
     }
 
-    // ------------------- Utils & Gizmos -------------------
+    // Gizmos
     static Vector2 Rotate(Vector2 v, float degrees)
     {
         float rad = degrees * Mathf.Deg2Rad;

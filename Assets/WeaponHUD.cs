@@ -21,7 +21,6 @@ public class WeaponHUD : MonoBehaviour
         player.OnWeaponChanged += HandleWeaponChanged;
         player.OnAmmoChanged   += HandleAmmoChanged;
 
-        // force an initial refresh
         HandleWeaponChanged(player.CurrentWeapon);
         var a = player.GetCurrentAmmo();
         HandleAmmoChanged(a.mag, a.reserve);
@@ -37,14 +36,12 @@ public class WeaponHUD : MonoBehaviour
     void HandleWeaponChanged(PlayerShooting.WeaponType wt)
     {
         if (weaponText) weaponText.text = wt.ToString();
-        // if you have icons: weaponIcon.sprite = player.GetIconFor(wt);
     }
 
     void HandleAmmoChanged(int mag, int reserve)
     {
         if (!ammoText) return;
 
-        // Knife has no ammo; show a dash
         if (player.CurrentWeapon == PlayerShooting.WeaponType.Knife)
             ammoText.text = "—";
         else

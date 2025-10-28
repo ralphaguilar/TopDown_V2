@@ -16,7 +16,6 @@ public class FadeScreen : MonoBehaviour
         cg.alpha = Mathf.Clamp01(cg.alpha);
     }
 
-    // Optional: call this at scene start if you want a fade-in from black
     public IEnumerator FadeIn(float duration = -1f)
     {
         if (duration <= 0f) duration = defaultDuration;
@@ -42,13 +41,12 @@ public class FadeScreen : MonoBehaviour
         float t = 0f;
         cg.alpha = from;
 
-        // Make sure UI blocks input during fade
         cg.blocksRaycasts = true;
         cg.interactable = true;
 
         while (t < duration)
         {
-            // Use unscaled time so it works even if Time.timeScale = 0
+         
             t += Time.unscaledDeltaTime;
             float a = Mathf.Lerp(from, to, t / duration);
             cg.alpha = a;

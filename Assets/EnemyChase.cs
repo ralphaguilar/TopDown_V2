@@ -23,7 +23,7 @@ public class EnemyChase : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
 
-    // Animator parameter names (must match your Animator)
+    // Animator parameter names 
     const string P_MOVE_X = "MoveX";
     const string P_MOVE_Y = "MoveY";
     const string P_SPEED  = "Speed";
@@ -41,11 +41,10 @@ public class EnemyChase : MonoBehaviour
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p) player = p.transform;
 
-        // 2D top-down sanity
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
 
-        // Ensure deaggro >= aggro
+        // Ensure deaggro
         if (deaggroRange < aggroRange) deaggroRange = aggroRange;
     }
 
@@ -53,19 +52,19 @@ public class EnemyChase : MonoBehaviour
     {
         if (!player) { UpdateAnimator(rb.linearVelocity); return; }
 
-        // Count down knockback/stun pause
+        // Count down knockback
         if (stunTimer > 0f)
         {
             stunTimer -= Time.fixedDeltaTime;
             UpdateAnimator(rb.linearVelocity);
-            return; // don't overwrite velocity while stunned
+            return; 
         }
 
         Vector2 pos = rb.position;
         Vector2 toPlayer = (Vector2)player.position - pos;
         float dist = toPlayer.magnitude;
 
-        // Aggro with hysteresis
+        // If in distance, aggro
         if (!hasAggro && dist <= aggroRange) hasAggro = true;
         if (hasAggro && dist >= deaggroRange) hasAggro = false;
 
@@ -80,7 +79,7 @@ public class EnemyChase : MonoBehaviour
             }
             else
             {
-                desiredVel = Vector2.zero; // in range; stop (you can attack here)
+                desiredVel = Vector2.zero; // if in range, stop
             }
         }
 
@@ -113,10 +112,7 @@ public class EnemyChase : MonoBehaviour
         anim.SetFloat(P_SPEED, speed);
     }
 
-    /// <summary>
-    /// Call this from your damage script right after applying knockback:
-    /// GetComponent&lt;EnemyChase&gt;()?.ApplyKnockback();
-    /// </summary>
+
     public void ApplyKnockback(float customPause = -1f)
     {
         float pause = (customPause > 0f) ? customPause : knockbackPause;

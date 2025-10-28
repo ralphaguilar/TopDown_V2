@@ -37,18 +37,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public SpriteRenderer spriteToFlash;
     public Color flashColor = new Color(1, 1, 1, 0.35f);
 
-    // ——— Events (for UI, SFX, camera shake, etc.) ———
+    // events
     public event Action<float,float> onHealthChanged; // hp, max
     public event Action onDamaged;
     public event Action onDied;
 
-    // ——— Private ———
+    // private
     Rigidbody2D rb;
     bool invulnerable;
     Color originalColor;
 
     [Header("References")]
-    public GameOverManager gameOverManager; // Assign in Inspector or auto-find
+    public GameOverManager gameOverManager; 
 
     void Awake()
     {
@@ -62,7 +62,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         hp = maxHealth;
         onHealthChanged?.Invoke(hp, maxHealth);
 
-        // Try to auto-find the GameOverManager if not assigned
         if (!gameOverManager)
         {
             gameOverManager = FindFirstObjectByType<GameOverManager>(UnityEngine.FindObjectsInactive.Include);
@@ -78,11 +77,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     void FixedUpdate()
     {
-        // Slowly stop knockback drift
+        // stops knockback drift
         rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, Vector2.zero, knockbackDrag * Time.fixedDeltaTime);
     }
 
-    // ——— Healing ———
+    //Healing
     public void Heal(float amount)
     {
         if (hp <= 0) return;
@@ -90,7 +89,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         onHealthChanged?.Invoke(hp, maxHealth);
     }
 
-    // ——— Taking Damage (IDamageable) ———
+    // Taking Damage 
     public void TakeDamage(float amount, Vector2 hitPoint, Vector2 knockback)
     {
         if (hp <= 0 || invulnerable) return;
@@ -112,7 +111,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             Die();
     }
 
-    // ——— I-Frames + Flash ———
+    // Invulnerability
     IEnumerator DoInvulnerability()
     {
         invulnerable = true;
@@ -135,12 +134,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         invulnerable = false;
     }
 
-    // ——— Death ———
+    // Death 
     void Die()
     {
         onDied?.Invoke();
 
-        // Stop player motion/input jitter on death
+        // Stop player motion
         rb.linearVelocity = Vector2.zero;
 
         if (showGameOverScreen)
@@ -153,20 +152,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
         else
         {
-            // Fallback: just disable the player
             gameObject.SetActive(false);
         }
     }
 
     IEnumerator ShowGameOverAfterDelay()
     {
-        // Wait with realtime in case we pause timeScale in the UI
+        
         if (deathDelay > 0f)
             yield return new WaitForSecondsRealtime(deathDelay);
 
         if (!gameOverManager)
         {
-            // Try one more time to find it (even if inactive)
             gameOverManager = FindFirstObjectByType<GameOverManager>(UnityEngine.FindObjectsInactive.Include);
         }
 
@@ -177,7 +174,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         else
         {
             Debug.LogWarning("[PlayerHealth] No GameOverManager found; consider enabling reloadSceneOnDeath as fallback.");
-            // Optional fallback:
             if (reloadSceneOnDeath)
                 StartCoroutine(ReloadScene());
         }

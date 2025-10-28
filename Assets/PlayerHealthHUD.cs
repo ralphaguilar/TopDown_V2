@@ -23,7 +23,6 @@ public class PlayerHealthHUD : MonoBehaviour
 
     void Start()
     {
-        // Initialize the UI with the current health at scene start
         if (player)
             UpdateUI(player.CurrentHealth, player.maxHealth);
     }
