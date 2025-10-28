@@ -14,7 +14,7 @@ TagManager:
   - Enemy
   - Grenade
   - Bullet
-  - 
+  - NPC
   - 
   - 
   - 
@@ -40,6 +40,30 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3332147549
+    locked: 0
+  - name: WalkInFront
+    uniqueID: 1987279145
+    locked: 0
+  - name: Collision
+    uniqueID: 3330533573
+    locked: 0
+  - name: Player
+    uniqueID: 2581512593
+    locked: 0
+  - name: WalkBehind
+    uniqueID: 3932148431
+    locked: 0
+  - name: Decor
+    uniqueID: 1179805747
+    locked: 0
+  - name: Bullet
+    uniqueID: 3283942623
+    locked: 0
+  - name: Bomb
+    uniqueID: 3813129731
     locked: 0
   m_RenderingLayers:
   - Default
