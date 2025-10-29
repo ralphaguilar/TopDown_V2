@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Shopkeeper : MonoBehaviour, IInteractable
 {
-    public ShopUI shop;                 // drag the ShopUI object here
+    public ShopUI shop;                 
     [TextArea] public string prompt = "Press E to open shop";
 
     void Reset()
     {
         var col = GetComponent<Collider2D>();
-        col.isTrigger = true;           // make it a trigger zone
+        col.isTrigger = true;           
     }
 
     public void Interact()

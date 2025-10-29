@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class WeaponHUD : MonoBehaviour
 {
     [Header("Refs")]
-    public PlayerShooting player;   // drag your Player here
-    public TMP_Text weaponText;     // drag HUD_Weapon
-    public TMP_Text ammoText;       // drag HUD_Ammo
-    public Image weaponIcon;        // optional
+    public PlayerShooting player;   
+    public TMP_Text weaponText;    
+    public TMP_Text ammoText;     
+    public Image weaponIcon;       
 
     void Awake()
     {
