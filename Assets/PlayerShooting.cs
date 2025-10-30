@@ -31,6 +31,12 @@ public class PlayerShooting : MonoBehaviour
     public float bulletLifetime = 2f;        
     public float spriteAngleOffsetDeg = 0f;  
 
+    // ---- NEW: Bullet visuals per weapon ----
+    [Header("Bullet Visuals")]
+    public Sprite pistolBulletSprite;
+    public Sprite shotgunBulletSprite;
+    public Sprite machineGunBulletSprite;
+
     // Pistol 
     [Header("Pistol")]
     public float pistolDamage = 35f;
@@ -86,7 +92,6 @@ public class PlayerShooting : MonoBehaviour
             { WeaponType.Pistol,     new AmmoState { magSize = 12, mag = 12, reserve = 72 } },
             { WeaponType.Shotgun,    new AmmoState { magSize =  2, mag =  2, reserve = 24 } },
             { WeaponType.MachineGun, new AmmoState { magSize = 30, mag = 30, reserve = 180 } },
-            
         };
 
         OnWeaponChanged?.Invoke(currentWeapon);
@@ -207,7 +212,6 @@ public class PlayerShooting : MonoBehaviour
         a.reserve -= take;
 
         OnAmmoChanged?.Invoke(a.mag, a.reserve);
-        
     }
 
     // Weapons 
@@ -274,11 +278,34 @@ public class PlayerShooting : MonoBehaviour
         SpawnBullet(lastAimDir, damage, speed, bulletLifetime);
     }
 
+    // ---- NEW: apply the proper sprite to a spawned bullet ----
+    void ApplyBulletSprite(GameObject go)
+    {
+        var sr = go ? go.GetComponentInChildren<SpriteRenderer>() : null;
+        if (!sr) return;
+
+        switch (currentWeapon)
+        {
+            case WeaponType.Pistol:
+                if (pistolBulletSprite) sr.sprite = pistolBulletSprite;
+                break;
+            case WeaponType.Shotgun:
+                if (shotgunBulletSprite) sr.sprite = shotgunBulletSprite;
+                break;
+            case WeaponType.MachineGun:
+                if (machineGunBulletSprite) sr.sprite = machineGunBulletSprite;
+                break;
+        }
+    }
+
     void SpawnBullet(Vector2 dir, float damage, float speed, float life)
     {
         if (!bulletPrefab || !firePoint) return;
 
         var go = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, AngleOf(dir)));
+
+        // NEW: set sprite based on currentWeapon
+        ApplyBulletSprite(go);
 
         var b = go.GetComponent<Bullet>();
         if (b != null)

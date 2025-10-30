@@ -5,16 +5,29 @@ using UnityEngine.SceneManagement;
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
-    public AudioClip gameTrack;
+
+    [Header("Scene Tracks")]
+    public AudioClip gameTrack;    // For SampleScene
+    public AudioClip casinoTrack;  // For Casino scene
+
+    [Header("Settings")]
     public float fadeInTime = 1.0f;
-    AudioSource src;
+
+    private AudioSource src;
+    private string currentSceneName;
 
     void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        // Singleton pattern
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // Setup AudioSource
         src = GetComponent<AudioSource>();
         src.loop = true;
         src.playOnAwake = false;
@@ -25,26 +38,54 @@ public class MusicManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "SampleScene")
+        currentSceneName = scene.name;
+
+        switch (scene.name)
         {
-            Play(gameTrack, fadeInTime);
-        }
-        else
-        {
-            StopMusic();
+            case "SampleScene":
+                Play(gameTrack, fadeInTime);
+                break;
+
+            case "Casino":
+                Play(casinoTrack, fadeInTime);
+                break;
+
+            default:
+                StopMusic();
+                break;
         }
     }
 
     public void Play(AudioClip clip, float fadeIn = 1f)
     {
         if (clip == null) return;
+
+        // If already playing the same clip, do nothing
+        if (src.clip == clip && src.isPlaying) return;
+
+        StopAllCoroutines();
+        StartCoroutine(FadeInClip(clip, fadeIn));
+    }
+
+    private System.Collections.IEnumerator FadeInClip(AudioClip clip, float time)
+    {
         src.clip = clip;
-        src.volume = 1f;
+        src.volume = 0f;
         src.Play();
+
+        float t = 0f;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            src.volume = Mathf.Lerp(0f, 1f, t / time);
+            yield return null;
+        }
+        src.volume = 1f;
     }
 
     public void StopMusic()
     {
+        StopAllCoroutines();
         if (src.isPlaying)
             src.Stop();
     }

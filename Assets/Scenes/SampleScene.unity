@@ -670,6 +670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df215caa94e1d4025b1f6947d10080ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 10
+  normalizeDiagonal: 1
 --- !u!114 &234346969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,6 +911,9 @@ MonoBehaviour:
     m_Bits: 4294967295
   bulletLifetime: 2
   spriteAngleOffsetDeg: 0
+  pistolBulletSprite: {fileID: 21300000, guid: 1dd514f78740f413ca7ced0a6d42413f, type: 3}
+  shotgunBulletSprite: {fileID: 21300000, guid: ee2077e5d3cb14ad8bbcf1f63e6ee813, type: 3}
+  machineGunBulletSprite: {fileID: 21300000, guid: 1dd514f78740f413ca7ced0a6d42413f, type: 3}
   pistolDamage: 35
   pistolSpeed: 18
   pistolFireCooldown: 0.25
@@ -5892,6 +5897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameTrack: {fileID: 8300000, guid: 6c452b33547dd46a4a714749bf681aac, type: 3}
+  casinoTrack: {fileID: 8300000, guid: 21ce7419fb97348aea8da4d91854b536, type: 3}
   fadeInTime: 1
 --- !u!82 &1318035419
 AudioSource:
