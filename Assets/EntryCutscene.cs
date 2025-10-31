@@ -1,81 +1,100 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
 
 public class EntryCutscene : MonoBehaviour
 {
     [Header("Refs")]
-    public Transform player;            
-    public Animator playerAnimator;       
-    public PlayerInput playerInput;       
+    public Transform player;               // player transform
+    public Animator playerAnimator;        // same Animator used in gameplay
+    public PlayerInput playerInput;        // the PlayerInput you normally use
     public Transform startPoint;
-    public Transform endPoint;            
+    public Transform endPoint;
     public float walkSpeed = 3f;
     public float arriveDistance = 0.05f;
 
     [Header("Fade (optional)")]
-    public FadeScreen fader;              
-    public float prePause = 0.25f;        
-    public float postPause = 0.25f;       
-    public float fadeInDuration = 0.8f;   
-
-    [Header("Animator Params (pick what you use)")]
-    public string speedParam = "Speed";  
-    public string isWalkingParam = "isWalking";
-    public string moveXParam = "MoveX";   
-    public string moveYParam = "MoveY";
+    public FadeScreen fader;
+    public float prePause = 0.25f;
+    public float postPause = 0.25f;
+    public float fadeInDuration = 0.8f;
 
     void Start()
     {
-        // Position player at start and disable control
-        if (player && startPoint) player.position = startPoint.position;
-        if (playerInput) playerInput.enabled = false;
+        // put player at entry spot and turn off controls
+        if (player && startPoint)
+            player.position = startPoint.position;
+
+        if (playerInput)
+            playerInput.enabled = false;
 
         StartCoroutine(DoCutscene());
     }
 
     IEnumerator DoCutscene()
     {
-        // fade-in from black
-        if (fader) yield return fader.FadeIn(fadeInDuration);
+        // fade from black
+        if (fader)
+            yield return fader.FadeIn(fadeInDuration);
 
         yield return new WaitForSecondsRealtime(prePause);
 
-        // Walk toward endPoint
         if (player && endPoint)
         {
-            Vector2 dir = ((Vector2)endPoint.position - (Vector2)player.position).normalized;
-            DriveAnimator(dir, walk: true);
-
+            // walk until close enough
             while (Vector2.Distance(player.position, endPoint.position) > arriveDistance)
             {
-                player.position = Vector2.MoveTowards(player.position, endPoint.position, walkSpeed * Time.deltaTime);
+                // direction we are traveling THIS frame
+                Vector2 dir = ((Vector2)endPoint.position - (Vector2)player.position).normalized;
+
+                // drive animator exactly like PlayerMovement does
+                DriveAnimatorDuringWalk(dir);
+
+                // move player
+                player.position = Vector2.MoveTowards(
+                    player.position,
+                    endPoint.position,
+                    walkSpeed * Time.deltaTime
+                );
+
                 yield return null;
             }
 
-            DriveAnimator(Vector2.zero, walk: false);
+            // stop walking anim and set final facing
+            DriveAnimatorStop();
         }
 
         yield return new WaitForSecondsRealtime(postPause);
 
-        // Re enable controls
-        if (playerInput) playerInput.enabled = true;
+        // give control back to player
+        if (playerInput)
+            playerInput.enabled = true;
     }
 
-    void DriveAnimator(Vector2 dir, bool walk)
+    void DriveAnimatorDuringWalk(Vector2 dir)
     {
-        if (playerAnimator == null) return;
+        if (!playerAnimator) return;
 
-        if (!string.IsNullOrEmpty(speedParam))
-            playerAnimator.SetFloat(speedParam, walk ? 1f : 0f);
+        // this matches Update() in PlayerMovement
+        playerAnimator.SetBool("isWalking", true);
+        playerAnimator.SetFloat("InputX", dir.x);
+        playerAnimator.SetFloat("InputY", dir.y);
 
-        if (!string.IsNullOrEmpty(isWalkingParam))
-            playerAnimator.SetBool(isWalkingParam, walk);
+        // we do NOT touch LastInputX/Y yet while moving
+    }
 
-        if (!string.IsNullOrEmpty(moveXParam))
-            playerAnimator.SetFloat(moveXParam, dir.x);
+    void DriveAnimatorStop()
+    {
+        if (!playerAnimator) return;
 
-        if (!string.IsNullOrEmpty(moveYParam))
-            playerAnimator.SetFloat(moveYParam, dir.y);
+        // stop walk
+        playerAnimator.SetBool("isWalking", false);
+
+        // lock the idle facing like your Move() callback does
+        float ix = playerAnimator.GetFloat("InputX");
+        float iy = playerAnimator.GetFloat("InputY");
+
+        playerAnimator.SetFloat("LastInputX", ix);
+        playerAnimator.SetFloat("LastInputY", iy);
     }
 }

@@ -410,6 +410,71 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &64434216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 64434219}
+  - component: {fileID: 64434218}
+  - component: {fileID: 64434217}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &64434217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64434216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b069f8401bbaf4146b5faed5a092ad64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingMoney: 0
+--- !u!114 &64434218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64434216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8ceb7b46b654b63b85a8b1c1578997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasShotgun: 0
+  hasMachinegun: 0
+  hasDash: 0
+  grenadeStock: 0
+  maxHealthBonus: 0
+  speedMultiplier: 1
+  pendingHeal: 0
+--- !u!4 &64434219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64434216}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.29619, y: 0.09516, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &74348157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,51 +1092,6 @@ MonoBehaviour:
   spriteToFlash: {fileID: 0}
   flashColor: {r: 1, g: 1, b: 1, a: 0.35}
   gameOverManager: {fileID: 2002162543}
---- !u!1 &272195452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 272195454}
-  - component: {fileID: 272195453}
-  m_Layer: 0
-  m_Name: PlayerWallet
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &272195453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272195452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b069f8401bbaf4146b5faed5a092ad64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingMoney: 0
---- !u!4 &272195454
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 272195452}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56961, y: 0.93711, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &341508562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,7 +1203,7 @@ MonoBehaviour:
   clock: {fileID: 868561977}
   enemyPrefab: {fileID: 5858461383948371763, guid: a8bd2f27718d44982bbe385f79c3d6ac, type: 3}
   player: {fileID: 234346972}
-  spawnRadius: 10
+  spawnRadius: 5
   minDistanceFromPlayer: 6
   baseInterval: 1
   minIntervalClamp: 0.6
@@ -1201,7 +1221,7 @@ Transform:
   m_GameObject: {fileID: 508839022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 0, z: 0}
+  m_LocalPosition: {x: 9.07, y: 6.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6140,7 +6160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53376e53e39bb40e494cd2ffd3d20ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallet: {fileID: 272195453}
+  wallet: {fileID: 0}
   moneyText: {fileID: 1524706842}
   prefix: $
 --- !u!114 &1524706842
@@ -19696,62 +19716,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054570073}
   m_CullTransparentMesh: 1
---- !u!1 &2142469064
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2142469066}
-  - component: {fileID: 2142469065}
-  m_Layer: 0
-  m_Name: EnemySpawner C
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2142469065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142469064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1f6f82c50f045d8bb2eb27c6b9a468, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clock: {fileID: 868561977}
-  enemyPrefab: {fileID: 5858461383948371763, guid: a8bd2f27718d44982bbe385f79c3d6ac, type: 3}
-  player: {fileID: 234346972}
-  spawnRadius: 10
-  minDistanceFromPlayer: 6
-  baseInterval: 1
-  minIntervalClamp: 0.6
-  simultaneousCap: 30
-  firstSpawnOffsetMultiplier: {x: 0.33, y: 1}
-  useGlobalCap: 1
-  globalAliveCap: 26
-  logSpawns: 0
---- !u!4 &2142469066
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142469064}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: 1.75447, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -19764,12 +19728,11 @@ SceneRoots:
   - {fileID: 868561978}
   - {fileID: 1027494760}
   - {fileID: 508839024}
-  - {fileID: 2142469066}
   - {fileID: 1247983594}
   - {fileID: 41618799}
   - {fileID: 1738244386}
   - {fileID: 155401638}
   - {fileID: 523985817}
-  - {fileID: 272195454}
   - {fileID: 1318035420}
   - {fileID: 2002162542}
+  - {fileID: 64434219}
