@@ -17,7 +17,7 @@ public class ShopItemButton : MonoBehaviour
     [Header("UI (optional)")]
     public TMP_Text label;
     public TMP_Text priceText;
-    public GameObject ownedBadge;     // e.g., a checkmark or “Owned” ribbon
+    public GameObject ownedBadge;     
 
     private Button btn;
     private PlayerWallet wallet;
@@ -107,12 +107,12 @@ public class ShopItemButton : MonoBehaviour
             return;
         }
 
-        // one-time unlocks already owned? do nothing
+        // if already own do nothing
         if (IsOwnedOneTime()) return;
 
+        // if have time add cant afford sound 
         if (!wallet.CanAfford(price))
         {
-            // Optional: play “cant afford” SFX or flash price red here
             SafeRefresh();
             return;
         }

@@ -7,7 +7,7 @@ public class PlayerShooting : MonoBehaviour
 {
     public enum WeaponType { Pistol, Shotgun, MachineGun, Knife }
 
-    // -------- Events for HUD --------
+    // Events for HUD
     public System.Action<WeaponType> OnWeaponChanged;
     public System.Action<int, int>   OnAmmoChanged;   
 
@@ -18,7 +18,7 @@ public class PlayerShooting : MonoBehaviour
         public int reserve;
     }
 
-    // -------- References --------
+    // References
     [Header("References")]
     public Transform firePoint;              
     public GameObject bulletPrefab;          
@@ -278,7 +278,6 @@ public class PlayerShooting : MonoBehaviour
         SpawnBullet(lastAimDir, damage, speed, bulletLifetime);
     }
 
-    // ---- NEW: apply the proper sprite to a spawned bullet ----
     void ApplyBulletSprite(GameObject go)
     {
         var sr = go ? go.GetComponentInChildren<SpriteRenderer>() : null;
@@ -304,7 +303,7 @@ public class PlayerShooting : MonoBehaviour
 
         var go = Instantiate(bulletPrefab, firePoint.position, Quaternion.Euler(0, 0, AngleOf(dir)));
 
-        // NEW: set sprite based on currentWeapon
+       // Sets sprites for bullet types
         ApplyBulletSprite(go);
 
         var b = go.GetComponent<Bullet>();
